@@ -104,13 +104,46 @@ Type "int i;" into the text document. Having recovered from the overwhelming fee
 
 Now type "int j = 2+2;" This is extremely similar to the above example, I just want to draw your attention to the fact that the compiler, infinite grace etc, will evaluate 2+2 while compiling and set the value of j to 4 to start out with.
 
-Note that each of these declarations ends with a semicolon. That's an important feature of C. Semicolons all over the place.
+Note that each of these declarations ends with a semicolon. That's an important feature of C. Semicolons all over the place. Each declaration ends with a semicolon.
 
 3.2. Functions
 
+Now that you have learned how to get the computer to store arbitrary values for you, let us turn to the question of how you might get the computer to perform calculations for you. Type:
+
+int doublei(int integertodouble){
+  return integertodouble * 2;
+}
+
+This tells the compiler to create a function named "doublei". We have chosen the name "doublei" because we want to double an integer. (Also, "double" is a keyword in C that allows you to declare double-precision floating point numbers.) When we put doublei(someint) somewhere in our code, when the program reaches that point, it will copy someint into a special temporary part of memory called a "stack frame" that we have set up for this invocation of the function. The location of memory wherein the copy resides will be known by the name "integertodouble". The program will then multiply 2 and integertodouble and "return" that value, meaning that wherever we put doublei(someint) it will be as though we typed the resulting value instead. The compiler may optimize away any number of the steps I have just described if it is sure it will be able to get the same result in fewer steps. The "int" in front of the function tells us that the value returned will be an int.
+
 3.4. Statements
 
+We have already used them, but there is another type of instruction in C besides declarations. They are "statements", and they do things. For instance, "2+2;" would instruct the machine to compute the result of adding 2 to 2, doublei(someint) would compute the result of doubling someint. Now, you might notice that it's not very useful to compute 2+2 in a vacuum. The program will compute a value of 4 and immediately move on, unless the value is stored somewhere. This leads us to contemplation of "assignment", setting a declared variable equal to a value. Assignment in a statement is written like assignment in a declaration, but without the type specifier. For example, once we have a declared variable i somewhere, we can write "i = doublei(someint);" to set the value of the memory referred to by i to whatever result we get out of that invocation of doublei.
+
+Statements can only be placed outside of functions if they involve only compile time constants, that is values that are known at compile time and known not to change, like a literal 2. Otherwise they have to be placed inside functions.
+
 3.5. Compiling
+
+So how do we make a program that runs all of these statements and such? Define a special function, main:
+
+int main(void){}
+
+This is pretty the simplest form main can take. When you compile your program by running cc myprogram.c, and then run the executable that your compiler produces, you will be running main. This form of main takes no arguments, as indicated by the keyword void provided in the arguments list. Main returns an int because C programs return a value from 0-255 to indicate whether they have encountered an error, with 0 indicating no error and other numbers indicating specific errors defined by the program in question. C programs return 0 by default, unless otherwise specified (to specify otherwise, use a return statement like "return 1;").
+
+So, for instance, you could write a program
+
+int i = 1;
+int j = 2+2;
+int doublei(int integertodouble){
+  return integertodouble * 2;
+}
+int main(void) {
+  return doublei(j);
+}
+
+then compile it at the commandline ("cc myprogram.c"), run it (probably with the command "./a.out"), and check the return value ("echo $?", a command which prints out (echos) the special value $?, the return value of the command which was last run).
+
+Now you can write any program you want, so long as you don't need any input and you only need one byte of output!
 
 4. Things Such As These
 
