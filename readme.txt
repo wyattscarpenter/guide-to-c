@@ -145,6 +145,10 @@ then compile it at the commandline ("cc myprogram.c"), run it (probably with the
 
 Now you can write any program you want, so long as you don't need any input and you only need one byte of output!
 
+3.6. Exercise 1: Celsius to Fahrenheit
+
+If you would like to pretend that what you have learned so far can be of use, try programming a simple Celsius to Fahrenheit converter. Some tips: You won't be able to output a number below 0 or above 255. You can write "int c = 20;" and change the right hand side directly in order to calculate different fahrenheits from different celsiuses. Due to the way integer division is implemented, you should multiply BEFORE you divide. 
+
 4. Things Such As These
 
 4.1. Cunning Conjunctions
