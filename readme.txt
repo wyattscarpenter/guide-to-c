@@ -156,7 +156,8 @@ If you would like to pretend that what you have learned so far can be of use, tr
 4.1. Cunning Conjunctions
 
 At this point I should explain logical, or "boolean" (named after famous logician George Boole) functions and operators, but to be honest I don't really feel like it.
-Consider this: "true" and "false", those hallowed truth values, are two values. Ergo, they can be contained in one bit. Therefore, you can treat one byte as eight truth values. As you will remember from your logic classes (here I pretend you have an undergraduate degree in copmputer science or philosophy but still don't know how to program in C) True AND False = False and True OR False = True. C implements the "bitwise" boolean operators thusly so that each of the 8 bits are respectively applied to each other: x & y will evaluate to a third value where each bit of x is ANDed against each bit of y, x | y will evaluate to a third value where each bit of x is ORed against each bit of y, x ^ y will evaluate to a third value where each bit of x is XORed against each bit of y, This is very useful for some operations, like when you must set "flags" where each bit of a particular position is set appropriately, but is not much use for the common man such as you or I. So, we encounter "logical values" on bytes. Imagine: a byte with all bits 0 is False (0), any other byte is True (0). With this convention established, we can set entire bytes to represent true or false without mucking about with individual bits. This is like an Enum, which will make more sense once you learn about Enums. There is a second set of operators for these: x && y equals True if both are nonzero, x || y evaluates to True if either is nonzero, and x ^^ y evaluates to True if exactly one is nonzero. These functions return a "bool", which is a byte that can take the values of the canonical True and false values, 1 and 0. You could specify your own bools by typing eg "bool b = true;", but this requires advanced C features, so right now it's best to think of truth values as a special interpretation of bytes and ints.
+
+Consider this: "true" and "false", those hallowed truth values, are two values. Ergo, they can be contained in one bit. Therefore, you can treat one byte as eight truth values. As you will remember from your logic classes (here I pretend you have an undergraduate degree in copmputer science or philosophy but still don't know how to program in C) true AND false = false and true OR false = true. C implements the "bitwise" boolean operators thusly so that each of the 8 bits are respectively applied to each other: x & y will evaluate to a third value where each bit of x is ANDed against each bit of y, x | y will evaluate to a third value where each bit of x is ORed against each bit of y, x ^ y will evaluate to a third value where each bit of x is XORed against each bit of y. This is very useful for some operations, like when you must set "flags" where each bit of a particular position is set appropriately, but is not much use for the common man such as you or I. So, we encounter "logical values" on bytes. Imagine: a byte with all bits 0 is false (0), any other byte is true (1). With this convention established, we can set entire bytes to represent true or false without mucking about with individual bits. This is like an enum, which will make more sense once you learn about enums. There is a second set of operators for these: x && y evaluates to true if both are nonzero, x || y evaluates to true if either is nonzero, and x ^^ y evaluates to true if exactly one is nonzero. These functions return a "bool", which is a byte that can take the values of the canonical frue and false values, 1 and 0. You could specify your own bools by typing eg "bool b = true;", but this requires advanced C features, so right now it's best to think of truth values as a special interpretation of bytes and ints.
 
 4.2. Pernicious Prepositions
 
@@ -172,17 +173,17 @@ while (something) {
   dosomemorethings();
 }
 
-In the above example, something is checked, and if it is true, dosomemorethings is executed. Then flow returns to the top of the block, something is checked, and if it is true, dosomemorethings is executed... so on until something is false, at which point we ignore the code block and proceed past the whole while statement.
+In the above example, something is checked, and if it is true, dosomemorethings is executed. Then flow returns to the top of the block, something is checked, and if it is true, dosomemorethings is executed... so on until we check and find something is false, at which point we ignore the code block and proceed past the whole while loop.
 
-It's useful to note that within a while statement, the keyword "continue" will go back up to the top of the while statement (to begin the check-execute cycle again) and the the keyword "break" will exit the while loop (ignoring all checks and proceeding with the proceeding code).
+It's useful to note that within a while loop, the keyword "continue" will go back up to the top of the while statement (to begin the check-execute cycle again) and the keyword "break" will exit the while loop (ignoring all checks and proceeding with the subsequent code).
 
-There are other keywords that control the flow of program execution, (ie, create loops) but frankly they are merely elaborations on these two concepts so they aren't necessary and I will treat them later.
+There are other keywords that control the flow of program execution, (ie, create loops or check conditions) but frankly they are merely elaborations on these two concepts so they aren't necessary and I will treat them later.
 
 Oh shoot I guess I have to tell you about comparators.
 
 4.2.1. Comparators
 
-Have you ever looked at two values and wondered how they compare? Well wonder no more! C provides several built-in comparators to compare things like ints. == is in infix operator that tells you if two things are equal. That is, x==y returns true if x is equal to y. Similarly, x>y returns true if x is greater than y, x<y returns true if x is less than y, x>=y returns true if x is greater than or equal to y, x<=y returns true if x is less than or equal to y, and x!=y returns true if x is inequal to y. They return false otherwise.
+Have you ever looked at two values and wondered how they compare? Well wonder no more! C provides several built-in comparators to compare simple things like numbers. == is in infix operator that tells you if two things are equal. That is, x==y returns true if x is equal to y. Similarly, x>y returns true if x is greater than y, x<y returns true if x is less than y, x>=y returns true if x is greater than or equal to y, x<=y returns true if x is less than or equal to y, and x!=y returns true if x is inequal to y. They return false otherwise.
 
 These comparators can be very useful in the predicates of if and while statements. For example:
 
@@ -196,7 +197,7 @@ Oh thank god we got to arrays. These are easy to explain. In C, much as in life,
 
 int x[5];
 
-which gives you 5 contiguous ints, starting with x.
+which gives you 5 contiguous ints, starting at the address held by the variable x.
 
 int x[];
 
@@ -205,21 +206,21 @@ gives you an array of an undetermined length, which is most useful when you want
 int x[] = {2,4,6,8,7000};
 
 
-You can access any element of this array by typing x[somenumber], where somenumber is the offset from x of the element. x is 0, the second element is 1, etc. Note that this means the nth, last element (say, the fifth element) will be at offset n-1 (say, offset 4).
+You can access any element of this array by typing x[somenumber], where somenumber is the offset from x of the element. The first element has an offset of 0, the second element is 1, etc. Note that this means the nth, last element (say, the fifth element) will be at offset n-1 (say, offset 4).
 
 This is because-- oh man I didn't explain pointers yet did I?
 
 4.4 Pointers
 
-You can store the address of values in memory as values in memory. Remember that we number each byte in your computer, so if we want to store the location of an important piece of information, and then look it up later by location, we can. This is called storing a pointer and dereferencing, respectively, but those are dumb names for these things so we're just going to talk about addresses and lookups here.
+You can store the address of values in memory as values in memory. Remember that we number each byte in memory, so if we want to store the location of an important piece of information, and then look the information up later by its location, we can. This is called storing a pointer and dereferencing, respectively, but those are dumb names for these things so we're just going to talk about addresses and lookups here.
 
-Say you have a location in memory known as x, and that location contains an address of a point in memory (which, remember, is essentially an int with certain machine-specific constraints). You can manipulate the address but manipulating x. Say you type "x = 2;". Now x will contain the address 2. If you type you type "x = x + 2;", x will contain the address 2 above the address x used to hold. That's all well and good. But now for the important part: you can look up the value at the address stored in x and use it in your code. To use a value stored at the address stored in x, you simply type "*x" into your code. Note that this is like a funky unary multiplication operation. This may seem confusing, but in the defense of the creators of C, they didn't do a very good job designing this language.
+Say you have a location in memory known as x, and that location contains an address of a point in memory (which, remember, is essentially an int with certain machine-specific constraints). You can manipulate the address by manipulating x. Say you type "x = 2;". Now x will contain the address 2. If you type you type "x = x + 4;", x will contain the address 2 above the address x used to hold (note that "2 above" is in whatever units of memory the address is supposed to refer to. If ints, this will be the same as adding 16 bytes to the address!). That's all well and good. But now for the important part: you can look up the value at the address stored in x and use it in your code. To use a value stored at the address stored in x, you simply type "*x" into your code. Note that this is like a funky unary multiplication operation. This may seem confusing, but in the defense of the creators of C, they didn't do a very good job designing this language.
 
 So, if x contains 4, and the integer starting at byte 4 is 69, "*x" will evaluate to 69 wherever it is used. You can also type "*x = 42" to set the value of the memory at the address stored in x to 42, or what have you.
 
 People typically find pointers uh I mean addresses very hard to understand. I think this is because it's typically explained terribly (eg, calling them "pointers" instead of "addresses", refering to the action where you look up the value at a pointer as "dereferencing" instead of "referencing" because "it's no longer a reference to something, guys, it's the real thing now :)" even though the action of refering to another thing is called a reference in every other situation in the english language) but if you still find it hard to understand, feel free to read this section again.
 
-Oh yeah, the type system keeps track of what is an address and what isn't for you, which is nice; it would be burdensome to keep track yourself, and storing an integer into a variable that's supposed to contain an address is usually useless, because on modern computers you usually don't know exactly what numerical address anything will be at at program run time. So there's a special form of declaration for variables that hold addresses. Since addresses are used by typing "*x", addresses are declared by typing
+Oh yeah, the type system keeps track of what variables are addresses and what types of things they refer to, which is nice; it would be burdensome to keep track yourself, and storing an integer into a variable that's supposed to contain an address is usually useless, because on modern computers you usually don't know exactly what numerical address anything will be at at program run time. So, there's a special form of declaration for variables that hold addresses. Since addresses are used by typing "*x", addresses are declared by typing
 
 int *x;
 
@@ -227,7 +228,7 @@ which means that once you look up the address specified by x, you will find an i
 
 Array access, "x[49]" is defined as "*(x+49)".
 
-By convention, there is a special address, 0, at which nothing can be stored. If you wish to indicate that an address does not indicate any valid value, you may set it to 0. The address is then known as a "null pointer" ("null" means 0).
+By convention, there is a special address, 0, at which nothing can be stored. If you wish to indicate that an address does not indicate any valid value, you may set the address to 0. The address is then known as a "null pointer" ("null" means 0).
 
 Humorously, the "0" I just described here is not always numerically the value 0 (machines are wacky, yo), but the C standard specifies that "x=0" will always set the address of x to the aforementioned special value, so you don't have to worry about this distinction. Everywhere else in this document and in C, 0 will be 0 as you expect.
 
