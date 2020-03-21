@@ -5,7 +5,7 @@ Besides fill memory?" --Jonathan Blow
 
 1.1. Preamble
 
-Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner.
+Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover the feature set of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features.
 
 1.2. Disclaimer
 
@@ -114,7 +114,7 @@ int doublei(int integertodouble){
   return integertodouble * 2;
 }
 
-This tells the compiler to create a function named "doublei". We have chosen the name "doublei" because we want to double an integer. (Also, "double" is a keyword in C that allows you to declare double-precision floating point numbers.) When we put doublei(someint) somewhere in our code, when the program reaches that point, it will copy someint into a special temporary part of memory called a "stack frame" that we have set up for this invocation of the function. The location of memory wherein the copy resides will be known by the name "integertodouble". The program will then multiply 2 and integertodouble and "return" that value, meaning that wherever we put doublei(someint) it will be as though we typed the resulting value instead. The compiler may optimize away any number of the steps I have just described if it is sure it will be able to get the same result in fewer steps. The "int" in front of the function tells us that the value returned will be an int.
+This tells the compiler to create a function named "doublei". We have chosen the name "doublei" because we want to double an integer. (Also, "double" is a keyword in C that allows you to declare double-precision floating point numbers.) When we put doublei(someint) somewhere in our code, when the program reaches that point, it will copy someint into a special temporary part of memory called a "stack frame" that we have set up for this invocation of the function. The location of memory wherein the copy resides will be known by the name "integertodouble". Furthermore, we have specified that integertodouble is an int, so if the previous steps try to copy a non-int into this memory, the compiler will warn us of our mistake. The program will then multiply 2 and integertodouble and "return" that value, meaning that wherever we put doublei(someint) it will be as though we typed the resulting value instead. The compiler may optimize away any number of the steps I have just described if it is sure it will be able to get the same result in fewer steps. The "int" in front of the function tells us that the value returned will be an int.
 
 3.4. Statements
 
@@ -122,13 +122,15 @@ We have already used them, but there is another type of instruction in C besides
 
 Statements can only be placed outside of functions if they involve only compile time constants, that is values that are known at compile time and known not to change, like a literal 2. Otherwise they have to be placed inside functions.
 
+Generally, statements execute from top to bottom in their specific context.
+
 3.5. Compiling
 
 So how do we make a program that runs all of these statements and such? Define a special function, main:
 
 int main(void){}
 
-This is pretty the simplest form main can take. When you compile your program by running cc myprogram.c, and then run the executable that your compiler produces, you will be running main. This form of main takes no arguments, as indicated by the keyword void provided in the arguments list. Main returns an int because C programs return a value from 0-255 to indicate whether they have encountered an error, with 0 indicating no error and other numbers indicating specific errors defined by the program in question. C programs return 0 by default, unless otherwise specified (to specify otherwise, use a return statement like "return 1;").
+This is pretty much the simplest form main can take. When you compile your program by running cc myprogram.c, and then run the executable that your compiler produces, you will be running main. This form of main takes no arguments, as indicated by the keyword void provided in the arguments list. Main returns an int because C programs return a value from 0-255 to indicate whether they have encountered an error, with 0 indicating no error and other numbers indicating specific errors defined by the program in question. C programs return 0 by default, unless otherwise specified (to specify otherwise, use a return statement like "return 1;").
 
 So, for instance, you could write a program
 
@@ -153,19 +155,131 @@ If you would like to pretend that what you have learned so far can be of use, tr
 
 4.1. Cunning Conjunctions
 
+At this point I should explain logical, or "boolean" (named after famous logician George Boole) functions and operators, but to be honest I don't really feel like it.
+Consider this: "true" and "false", those hallowed truth values, are two values. Ergo, they can be contained in one bit. Therefore, you can treat one byte as eight truth values. As you will remember from your logic classes (here I pretend you have an undergraduate degree in copmputer science or philosophy but still don't know how to program in C) True AND False = False and True OR False = True. C implements the "bitwise" boolean operators thusly so that each of the 8 bits are respectively applied to each other: x & y will evaluate to a third value where each bit of x is ANDed against each bit of y, x | y will evaluate to a third value where each bit of x is ORed against each bit of y, x ^ y will evaluate to a third value where each bit of x is XORed against each bit of y, This is very useful for some operations, like when you must set "flags" where each bit of a particular position is set appropriately, but is not much use for the common man such as you or I. So, we encounter "logical values" on bytes. Imagine: a byte with all bits 0 is False (0), any other byte is True (0). With this convention established, we can set entire bytes to represent true or false without mucking about with individual bits. This is like an Enum, which will make more sense once you learn about Enums. There is a second set of operators for these: x && y equals True if both are nonzero, x || y evaluates to True if either is nonzero, and x ^^ y evaluates to True if exactly one is nonzero. These functions return a "bool", which is a byte that can take the values of the canonical True and false values, 1 and 0. You could specify your own bools by typing eg "bool b = true;", but this requires advanced C features, so right now it's best to think of truth values as a special interpretation of bytes and ints.
+
 4.2. Pernicious Prepositions
+
+Oh boy I guess it's time to teach you flow control statements, huh? There are quite a few of them, but you only really need two, so I'm only going to teach you two. "If" executes a block of statements if the "predicate" variable supplied to it evalutes to true when executation reaches that point in the code.
+
+if (something){
+  dosomemorethings();
+}
+
+While repeats a block of code while the predicate supplied to it is true.
+
+while (something) {
+  dosomemorethings();
+}
+
+In the above example, something is checked, and if it is true, dosomemorethings is executed. Then flow returns to the top of the block, something is checked, and if it is true, dosomemorethings is executed... so on until something is false, at which point we ignore the code block and proceed past the whole while statement.
+
+It's useful to note that within a while statement, the keyword "continue" will go back up to the top of the while statement (to begin the check-execute cycle again) and the the keyword "break" will exit the while loop (ignoring all checks and proceeding with the proceeding code).
+
+There are other keywords that control the flow of program execution, (ie, create loops) but frankly they are merely elaborations on these two concepts so they aren't necessary and I will treat them later.
+
+Oh shoot I guess I have to tell you about comparators.
+
+4.2.1. Comparators
+
+Have you ever looked at two values and wondered how they compare? Well wonder no more! C provides several built-in comparators to compare things like ints. == is in infix operator that tells you if two things are equal. That is, x==y returns true if x is equal to y. Similarly, x>y returns true if x is greater than y, x<y returns true if x is less than y, x>=y returns true if x is greater than or equal to y, x<=y returns true if x is less than or equal to y, and x!=y returns true if x is inequal to y. They return false otherwise.
+
+These comparators can be very useful in the predicates of if and while statements. For example:
+
+while (x!=stopcodon){
+  x=processnextunit();
+}
 
 4.3. Arrays
 
-4.4. Strings
+Oh thank god we got to arrays. These are easy to explain. In C, much as in life, oftentimes one needs a large number of related values in a list. What better way to store these than right next to each other? An array in C is a list of identitical values that are all contiguous (laid out so they touch each other) in memory. You can declare an array like
 
-4.5. Arguments to Main
+int x[5];
 
-4.6. C Pre-processor
+which gives you 5 contiguous ints, starting with x.
 
-4.6.1 #include
+int x[];
 
-4.6.2 #define
+gives you an array of an undetermined length, which is most useful when you want to specify the values in the array directly, which you can do:
+
+int x[] = {2,4,6,8,7000};
+
+
+You can access any element of this array by typing x[somenumber], where somenumber is the offset from x of the element. x is 0, the second element is 1, etc. Note that this means the nth, last element (say, the fifth element) will be at offset n-1 (say, offset 4).
+
+This is because-- oh man I didn't explain pointers yet did I?
+
+4.4 Pointers
+
+You can store the address of values in memory as values in memory. Remember that we number each byte in your computer, so if we want to store the location of an important piece of information, and then look it up later by location, we can. This is called storing a pointer and dereferencing, respectively, but those are dumb names for these things so we're just going to talk about addresses and lookups here.
+
+Say you have a location in memory known as x, and that location contains an address of a point in memory (which, remember, is essentially an int with certain machine-specific constraints). You can manipulate the address but manipulating x. Say you type "x = 2;". Now x will contain the address 2. If you type you type "x = x + 2;", x will contain the address 2 above the address x used to hold. That's all well and good. But now for the important part: you can look up the value at the address stored in x and use it in your code. To use a value stored at the address stored in x, you simply type "*x" into your code. Note that this is like a funky unary multiplication operation. This may seem confusing, but in the defense of the creators of C, they didn't do a very good job designing this language.
+
+So, if x contains 4, and the integer starting at byte 4 is 69, "*x" will evaluate to 69 wherever it is used. You can also type "*x = 42" to set the value of the memory at the address stored in x to 42, or what have you.
+
+People typically find pointers uh I mean addresses very hard to understand. I think this is because it's typically explained terribly (eg, calling them "pointers" instead of "addresses", refering to the action where you look up the value at a pointer as "dereferencing" instead of "referencing" because "it's no longer a reference to something, guys, it's the real thing now :)" even though the action of refering to another thing is called a reference in every other situation in the english language) but if you still find it hard to understand, feel free to read this section again.
+
+Oh yeah, the type system keeps track of what is an address and what isn't for you, which is nice; it would be burdensome to keep track yourself, and storing an integer into a variable that's supposed to contain an address is usually useless, because on modern computers you usually don't know exactly what numerical address anything will be at at program run time. So there's a special form of declaration for variables that hold addresses. Since addresses are used by typing "*x", addresses are declared by typing
+
+int *x;
+
+which means that once you look up the address specified by x, you will find an int.
+
+Array access, "x[49]" is defined as "*(x+49)".
+
+By convention, there is a special address, 0, at which nothing can be stored. If you wish to indicate that an address does not indicate any valid value, you may set it to 0. The address is then known as a "null pointer" ("null" means 0).
+
+Humorously, the "0" I just described here is not always numerically the value 0 (machines are wacky, yo), but the C standard specifies that "x=0" will always set the address of x to the aforementioned special value, so you don't have to worry about this distinction. Everywhere else in this document and in C, 0 will be 0 as you expect.
+
+4.5. Strings
+
+The byte data type is called "char" because it can be used to store characters, as discussed in section 2. In fact, this data type is not guaranteed to store a byte, simply to store enough data to hold a character. On all modern computing systems a char is exactly an 8-bit byte though.
+
+You can type a literal char into your program using single quotes, ie:
+
+char lastalphabeticalletter = 'z';
+
+Naturally, text is a string of characters. This should suggest to your brilliant mind that an array is the most promising way to store strings. Correct! However, in C we often wish to deal with strings of characters of an indeterminate number (ie the user might type "dog" or "sesquipedalian", and we want to handle both cases correctly), and the length of arrays is not stored anywhere in C at program run time. Therefore, a convention is established that strings are "null-terminated" ("null" means 0); when you want to indicate the end of a string, you make the char after the end of the string store the value 0 (in ASCII this is known as a NUL). All functions that deal with strings respect this convention. Pro tip: remember to terminate your strings.
+
+You can type a literal string into your program using double quotes, ie:
+
+char *magic = "xyzzy";
+
+Note that this makes a certain portion of memory contain 6 chars: 'x', 'y', 'z', 'z', 'y', and a char set to 0, which can be written in C as '\0', and then sets the memory known as magic to hold the address of the first 'x'.
+
+4.6. Arguments to Main
+
+You might notice that programs you can run from the command line can take arguments. That is, not only can you run "ls", you can run "ls -l" to get ls to operate in a certain way.
+
+By well-entreneched convention of operating systems, your C program can look at all the text it recieves from the command line! Instead of defining a main with no arguments, as we did before, define a main that takes two arguments: the count of command line arguments supplied, and the address of a list of addresses of strings that are the arguments:
+
+int main(int argc, char **argv){}
+
+The count is traditionally named "argc" for "argument count", and the address of address is traditionally named "argv" for "argument vector", from the mathematical concept of a vector (ie, a list).
+
+You might be a little confused at the concept of an address of a list of addresses of strings, but consider: each command line argument (like "-l") is a string. In C, a string is the address of the first char. The operating system will break apart the command (like "ls -l") for you, and give you a list of strings. This list also has to be variable length, so its length is indicated by argc. argv[0] contains the name of your program (like "ls" in the "ls -l" example above). Here is a simple program that iterates over each character of each argument:
+
+int main(int argc, char **argv){
+  int i = 0;
+  while(i < argc){
+    int j = 0;
+    char c = argv[i][0];
+    while(c){
+      c = argv[i][j];
+      j = j + 1;
+    }
+    i = i + 1;
+}
+
+4.6.1 Exercise 1.1: Celsius to Fahrenheit
+
+Try making your Celsius to Fahrenheit accept an argument from the command line to specify a number to convert. Note that your argument will be a string, so you will have to write a function to convert a string of textual digits to an integer. Try not to use any libraries for this; it will be good practice of your skills so far.
+
+4.7. C Pre-processor
+
+4.7.1 #include
+
+4.7.2 #define
 
 The most important feature of the C pre-processor is that they all apply at compile time, when your source code is being transformed into an executable that will eventually be run.
 
@@ -198,15 +312,15 @@ int main(void) {
   return 0;
 }
 
-4.6.3 #if, #ifdef, #ifndef, #else, #elif, #endif
+4.7.3 #if, #ifdef, #ifndef, #else, #elif, #endif
 
-4.6.4 Others
+4.7.4 Others
 
 #error allows you to trigger custom compiler errors in case your code detects something is wrong while in the preprocessing stage.
 
 #pragma: from the greek πρᾶγμᾰ (meaning "a thing done" or "a fact") #pragma allows you to specify various additional command to the compiler that the creators of C didn't think of in time to make them real preprocessor commands.
 
-4.7. Input-Output (Standard IO)
+4.8. Input-Output (Standard IO)
 
 Now you should have enough knowledge to complete every exercise in the appendix! Except maybe the ones that involve files.
 
