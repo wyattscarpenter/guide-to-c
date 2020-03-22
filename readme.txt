@@ -118,7 +118,7 @@ This tells the compiler to create a function named "doublei". We have chosen the
 
 3.4. Statements
 
-We have already used them, but there is another type of instruction in C besides declarations. They are "statements", and they do things. For instance, "2+2;" would instruct the machine to compute the result of adding 2 to 2, doublei(someint) would compute the result of doubling someint. Now, you might notice that it's not very useful to compute 2+2 in a vacuum. The program will compute a value of 4 and immediately move on, unless the value is stored somewhere. This leads us to contemplation of "assignment", setting a declared variable equal to a value. Assignment in a statement is written like assignment in a declaration, but without the type specifier. For example, once we have a declared variable i somewhere, we can write "i = doublei(someint);" to set the value of the memory referred to by i to whatever result we get out of that invocation of doublei.
+We have already used them, but there is another type of instruction in C besides declarations. They are "statements", and they do things. For instance, "2+2;" would instruct the machine to compute the result of adding 2 to 2, doublei(someint) would compute the result of doubling someint. Now, you might notice that it's not very useful to compute 2+2 in a vacuum. The program will compute a value of 4 and immediately move on, unless the value is stored somewhere. This leads us to contemplation of "assignment", setting a declared variable equal to a value. Assignment in a statement is written like assignment in a declaration, but without the type specifier. For example, once we have a declared variable i somewhere, we can write "i = doublei(someint);" to set the value of the memory referred to by i to whatever result we get out of that invocation of doublei. Fun fact: assignment returns the value assigned, so "x = 2" both sets x to 2 and returns 2. This can be very useful in loops, which we will get to later.
 
 Statements can only be placed outside of functions if they involve only compile time constants, that is values that are known at compile time and known not to change, like a literal 2. Otherwise they have to be placed inside functions.
 
@@ -278,19 +278,42 @@ Try making your Celsius to Fahrenheit accept an argument from the command line t
 
 4.7. C Pre-processor
 
-4.7.1 #include
+The C programming language has an initial stage of "pre-processing" that replaces certain bits of text with other bits of text, because sometimes that is useful. The C Pre-Processor (or "cpp", not to be confused with the "cpp" that is C Plus Plus, which is a dumb tacked-on addition to C) is a dumb tacked-on addition to C. Text in programming languages is "parsed", ie its structure is understood by the computer, early in the compilation process. During this process, the text is broken into "tokens", the semanic units the compiler operates on. The preprocessor is in charge of tokenization, and does its other funky business before and after tokenization.
+
+4.7.1 Comments
+
+If you want to include a note in your program for other programmers to read (but not for the compiler to see), you can type "//" the double slash and everything after it, up to the end of the line, will be ignored by the compiler. Similarly, you can type /* to begin a multi-line comment and */ to end one, for example
+
+/* all this text
+will be ignored */
+
+Comments don't "nest", so 
+
+/*/**/*/
+
+looks to the compiler like a comment /*/**/ followed by an illegal token */, which produces a syntax error.
+
+Note that commented text will still seperate other tokens in the program: "x/*foo*/x" is not the same as "xx", it's the same as "x x".
+
+4.7.2 #include
+
+Sometimes you want to include the text of other files in your file. Say you have written a function, like our doubling function doublei from before. Say, in fact, that you have written a whole family of doubling functions, like doublef, doublec, etc, and you have stored these functions in a file named doubling.c. How might you use those functions in a different program? Your brilliant mind probably immediately conjures the answer: "I could copy the entire text of doubling.c into my new program. In this way, the compiler will make the new program contain the functions of the doubling.c" Correct! So long as doubling.c does not contain a main function (which would mean copying the text of doubling.c into the new program would produce a program with two main functions, an error) this is how you would do it. Luckily, C contains a facility to do this for you conveniently, a preprocessor directive called "#include". 
+
+#include "doubling.c"
+
+copies the entire text of doubling.c into your program in place of that line. Note that we use quotes here to indicate that the file we wish to include may be in the same directory as our program, and we should search there before searching our computer's other directories. If you wish to search only the system directories of your computer for the file, use angle brackets (ie <doubling.c>).
+
+I will not be explaining header files in-depth at this time, except to note that they are valid C programs that end in .h and simply contain function headers like "int doublei(int integertodouble);", which let your program know what functions are in another file that will be hooked up later in the compilation process. Most includes in most C programs use header files, but they ar just a somewhat more roundabout way of doing what we have just described with our inclusion of C files.
+
+Note that when a C file is included, any preprocessor directives it contains will be evaluated, including its includes. Therefore, circular includes can pose a huge problem. Don't do that.
 
 4.7.2 #define
 
-The most important feature of the C pre-processor is that they all apply at compile time, when your source code is being transformed into an executable that will eventually be run.
+The most important feature of the C pre-processor is that these transformations all apply at compile time, when your source code is being transformed into an executable that will eventually be run.
 
 The second most important feature of the cpp is that it is unbound by many of the rules of C syntax and semantics.
 
-It's rather hard to come up with simple motivating examples for using the C pre-processor to #define things, because using the C pre-processor in simple cases is usually poor style, as it makes your code less readable for other programmers, who are more familiar with the C programming language than with your bespoke personal C macros.
-
-In real life, the main purpose for #define is to define platform-specific constants that have to be known at compile time. For instance, supposed that on Windows you need to specify something with the number 1 and for linux the number 2. You don't want to do a lot of mucking around and guessing at run time, so it's much simpler to define a macro for each one.
-
-For example, let's say you have made the == = mistake too many times, and want to replace those symbols with the word "is" and "set". Immediately, you run into some inconvenience. There are various types in C that can automatically be compared with ==, but since you user have very limited ability to write function that take various types, best practice sugggests you're going to have to write several functions, along the lines of int is_i(double x, double y){return x==y;} int is_f(double x, double y){return x==y;}. And set() is even worse: the intuitive int set_i(int x, int y){return x=y;} won't work at all, because the x and y inside the function are local variables, and won't change the values in the original context. Your best bet would be a series of functions like int set_i(int *x, int *y){return *x=*y;} and hope that the compiler will optimize out the overhead usually associated with dealing with pointers.
+For example, let's say you have made the == = mistake too many times, and want to replace those symbols with the word "is" and "set". Immediately, you run into some inconvenience. There are various types in C that can automatically be compared with ==, but since you the user have very limited ability to write functions that take various types, best practice sugggests you're going to have to write several functions, along the lines of "int is_i(double x, double y){return x==y;} int is_f(double x, double y){return x==y;}". And set() is even worse: the intuitive int set_i(int x, int y){return x=y;} won't work at all, because the x and y inside the function are local variables, and won't change the values in the original context. Your best bet would be a series of functions like int set_i(int *x, int *y){return *x=*y;} and hope that the compiler will optimize out the overhead usually associated with dealing with pointers.
 
 But there's an easier way.
 
@@ -300,6 +323,8 @@ But there's an easier way.
 This will replace all instances of the identifier "set" in your code with =, and all instances of the identifier "is" in your code with ==, and let the compiler compile the resulting code as regular C code.
 
 In a way, the preprocessor can be used to work around weaknesses in C syntax. However, there is no standard tool to work around weaknesses in the preprocessor's syntax.
+
+The following code will be reworked to be an illustrative example when I get around to it.
 
 #include <stdio.h>
 #define set =
@@ -313,15 +338,105 @@ int main(void) {
   return 0;
 }
 
-4.7.3 #if, #ifdef, #ifndef, #else, #elif, #endif
+A defined thing is known as a macro, as the token replaced by the directive can be transformed into arbitrarily long (ie "macro", from the greek word for "long", μακρός) amounts of code.
+
+4.7.3 #if, #ifdef, #ifndef, #undef, #else, #elif, #endif
+
+It's rather hard to come up with simple motivating examples for using the C pre-processor to #define things, because using the C pre-processor in simple cases is usually poor style, as it makes your code less readable for other programmers, who are more familiar with the C programming language than with your bespoke personal C macros.
+
+In real life, the main purpose for #define is to define platform-specific constants that have to be known at compile time. For instance, suppose that on Windows you need to specify a variable to have the value 1 and for linux the value 2. You don't want to do a lot of mucking around and guessing at run time, so it's much simpler to define a macro. But the macro must be defined a different way for each operating system. How might we go about this?
+
+Well, when compiling for Windows, compilers will typically #define _WIN32 as 1 when compiling for windows, and __linux__ as 1 when compiling for linux. Therefore, we can write the code
+
+#if _WIN32
+#define something 1
+#endif
+
+#if __linux__
+#define something 2
+#endif
+
+The "#if [...] #endif" functions like "if{[...]}", but it is evaluated by the compiler while compiling. Something will be defined correctly.
+
+Say we aren't sure if _WIN32 is going to be defined as a literal 1 or something else, and we just want to know if it's defined as anything. In this case we could write
+
+#ifdef _WIN32
+#define whatever 1000
+#endif
+
+This would excute the body if _WIN32 is defined at all, even as 0.
+
+Similarly you can use #ifndef to check if something isn't defined. You can use #undef to remove a definition.
+
+This is mostly useful in the case I have just described, but also is quite useful to create headers that guard against multiple inclusion, as we have discussed in the previous section. Most header files will be contained in some code like this:
+
+#ifndef __VERY_SPECIAL_SYMBOL
+#define __VERY_SPECIAL_SYMBOL
+[rest of header file]
+#endif
+
+In this way, including the header file a second time will have no effect.
+
+This is a bit awkward, because I chose not to teach you about else statements earlier, so I can't explain #else and #elif yet, but I have to mention them for completeness. Rest assured that they work just like else if and else, once you learn about those.
 
 4.7.4 Others
 
+Here are some other preprocessor directives.
+
 #error allows you to trigger custom compiler errors in case your code detects something is wrong while in the preprocessing stage.
 
-#pragma: from the greek πρᾶγμᾰ (meaning "a thing done" or "a fact") #pragma allows you to specify various additional command to the compiler that the creators of C didn't think of in time to make them real preprocessor commands.
+#pragma: from the greek πρᾶγμᾰ (meaning "a thing done" or "a fact") #pragma allows you to specify various additional commands to the compiler that the creators of C didn't think of in time to make them real preprocessor commands. I have never used a single one of these in my code, but I have SEEN them used sometimes.
 
 4.8. Input-Output (Standard IO)
+
+Oh thank god I can finally explain how C programs actually are supposed to do input and output (IO). This is pretty much the most important part of a workaday program, most of which are concerned with transforming input data to output data in some way. For instance, a program that takes a number in Celsius and outputs it as Fahrenheit. It was very difficult to pretend you could write a useful program without this, but unfortunately I needed to explain strings and the cpp first, because io uses strings and requires a library. The system you're programming on should define a series of standard system-specific input-output functions in stdio.h. Therefore, you must type
+
+#include <stdio.h>
+
+at the top of your file to do io. It's possible to define your own io functions out of lower-level primitives, but the way you arrange those primitives would be system-dependent anyway, so you might as well just use the system library.
+
+Producing output is often called "printing" because back in the day output would go directly to a printer which would print it out. Taking in input is often called "reading" because it's like your program is reading the input :)
+
+The three most important io functions are puts, getchar, and printf. Puts (put string) prints out a string you supply to it, and then a newline, to a magical placed called standard output. Getchar (get character) reads a character from standard input. Note the asymmetry between these, due to the details of managing space. Input comes from a "stream" of data, and output goes to a "stream" of data. The point of defining these things as "streams" is so we can make someone else worry about how they actually work and just shove all our data in there as we please. So each stream may take or give an unbounded amount of data. When printing, this is a great convenience: we can print our variable length strings, no problem. However, we can only read in one character at a time, for if we tried to read in all characters at once (say, into an array of 100 characters) we might quickly run out of space. Therefore the best practice in C programs is usually to read a fixed amount of input (such as one character) at a time, and to print results as soon as you can, so to avoid having to manage excessive amounts of memory.
+
+If, god forbid, the output stream should run out of space, puts will return the non-zero constant EOF. People almost never check this.
+
+If, as is inevitable, the input stream should run out of data, getchar will return the non-zero constant EOF. People almost always check this, and write neat loops like
+
+int c;
+while(c = getchar()){
+  //do some stuff with c
+}
+
+Note that c is an int even though it deals with textual characters. Funny, isn't it?
+
+Now the printf is more subtil than any function of the field which the LORD God had made. But it is important if you want to print out anything besides strings. It takes a string as a "format" and a variable number of other arguments depending on what the format specifies. Printf prints the format string, but whenever it encounters a percent sign ("%") in the string, it prints the next argument to printf. How it formats the data in the argument is specified by a handful of symbols after the %. I can't be bothered to remember most of these specifiers other than %d, which prints an integer as a decimal number.
+
+printf("Here is your number: %d\n", 10); //prints "Here is your number: 10", then a newline.
+
+Printf does all its formatting at runtime, and covers a lot of cases, so it is a fairly hefty function and occasionally you will put the wrong specifiers in and become confused and/or crash your program and/or introduce serious security flaws. For these reasons, I caution against using a printf when a puts will do.
+
+Unlike puts, you will have to specify your own newlines using "\n".
+
+Even though it's not part of C, I should mention that on the bash command line, you can specify files to go into input or output like so:
+
+programyourerunning <inputfile.txt >outputfile.txt
+
+Note that the angle bracket bits are not arguments to your program. You will not see them in argv! They are processed by bash and never seen by your program.
+
+You can also "pipe" the output of one program into another, which fittingly uses the pipe character as punctuation:
+
+programyourerunning | anotherprogram
+
+If you don't specify an output file, output will generally be printed to the command line. If you don't specify an input file, input will be solicited from the command line. Try this, for example:
+
+#include <stdio.h>
+
+int main(void) {
+  int c = getchar();
+  printf("%c", c);
+  return 0;
+}
 
 Now you should have enough knowledge to complete every exercise in the appendix! Except maybe the ones that involve files.
 
