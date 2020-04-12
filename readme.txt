@@ -370,8 +370,8 @@ Similarly you can use #ifndef to check if something isn't defined. You can use #
 
 This is mostly useful in the case I have just described, but also is quite useful to create headers that guard against multiple inclusion, as we have discussed in the previous section. Most header files will be contained in some code like this:
 
-#ifndef __VERY_SPECIAL_SYMBOL
-#define __VERY_SPECIAL_SYMBOL
+#ifndef MYPROGRAM_VERY_SPECIAL_SYMBOL
+#define MYPROGRAM_VERY_SPECIAL_SYMBOL
 [rest of header file]
 #endif
 
@@ -424,9 +424,29 @@ programyourerunning <inputfile.txt >outputfile.txt
 
 Note that the angle bracket bits are not arguments to your program. You will not see them in argv! They are processed by bash and never seen by your program.
 
+You can append to a file instead of overwrite it with >>
+
+programyourerunning <inputfile.txt >>outputfile.txt
+
+You can remember this because if you use ">>", the file will contain two outputs (">"), the previous and the present.
+
 You can also "pipe" the output of one program into another, which fittingly uses the pipe character as punctuation:
 
 programyourerunning | anotherprogram
+
+There's a hilarious limitation of Bash, such that
+
+myprogram <file.txt >file.txt
+
+selects the same file as input and output, probably wanting to process a file and rewrite it in place. But selecting a file as output immediately tuncates it to zero length, meaning that the input stream is now zero length, and the program gets no data to work with. This erases file.txt.
+
+While this is dumb and scary, you can easily work around it by installing the sponge command (it's found in the moreutils package on ubuntu, sudo apt install moreutils) and working like so:
+
+myprogram <file.txt | sponge file.txt
+
+Sponge soaks up input and writes it to the file given as an argument.
+
+On that note, if you're new to the command line environment, you're probably reasonably scared that rm deletes your files irreversibly (though you can muck about with other tools to recover them, somehow). In practice, this turns out not to be a problem, because you become very used to only rming file you are sure you want to rm, you make periodic backups, and you version control. But, you may wish to use the trash command (sudo apt install trash-cli; man trash) instead, and maybe even alias rm to trash. But I digress.
 
 If you don't specify an output file, output will generally be printed to the command line. If you don't specify an input file, input will be solicited from the command line. Try this, for example:
 
@@ -454,7 +474,42 @@ Standard Libraries
 
 File IO
 
-And Beyond!
+I consider it bad style to manipulate a file directly if instead you could process streams passed to your program into streams going out. This is because the streams method has no "side effects", that is, all the data is intentionally specified by the user, with no risk of modifying a file they didn't intend.
+
+X. TUIs, GUIs, Games
+
+So far I have taught you how to make classic C programs that are invoked from the command line to process streams of data and manipulate files. But there are other modalities of interface. I don't have the time or expertise to explain them here, but I will give you some advice at where to look if you want to make a program with one.
+
+If you use a text editor from the command line like nano, you're using an interactive TUI, or Text User Interface. The state of the art for creating these seems to be a library known as ncurses. 
+
+Most applications these days are Graphical User Interfaces, or GUIs. The state of the art libraries for producing these seem to be Qt and GTK, but honestly I've used a lot of bad GUIs made in Qt and GTK, and those libraries seem overcomplex, so I recommend using IUP (Portable User Interface). All of these GUI libraries are cross-platform, so they work on Windows and Linux and Mac.
+
+If you've played a video game, you may have noticed that they look nothing like GUIs. They also have their own libraries. A popular cross-platform one is SDL (Simple DirectMedia Layer).
+
+All of these are more trouble than they are worth, in my opinion.
+
+X. Version Control
+
+You may have noticed that sometimes you edit a program, then you return another day and edit it again, then you return a third day and decide that your second edit was erroneous and want to undo it but whoops! your editor's undo history is gone, and you have no choice but to rewrite the program using your hazy memory as a guide. Many such cases.
+
+What you need is a program that manages versions of your program, a "version control system" (VCS). The most popular one is git (sudo apt install git). Git is a pretty complex tool but simple use of it is somewhat simple. I basically only remember six commands:
+
+git init #starts a new git repo
+
+git commit -am "a summary of what you did" -m "further details about what you did, if need be" #commits all the changes you made, with the supplied message
+#on your first run, git commit will give you an error and tell you to identify yourself. I never remember those commands, because git tells me the right commands every time.
+
+git status #see what changes are not yet reverted
+
+git log #see a log of commits
+
+git pull #pull changes from a remote repository, if you have one
+
+git push #push changes to a remote repository, if you have one
+
+#there are commands to set the code to a certain state in history, but these are finnicky enough that I always look them up to make sure I'm doing the right thing
+
+X. And Beyond!
 
 Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc.
 
