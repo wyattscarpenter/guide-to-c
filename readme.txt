@@ -476,9 +476,9 @@ Now you should have enough knowledge to complete every exercise in the appendix!
 
 While the purpose of the previous section was to get you up to speed with a minimal set of features you need to write effective C programs, this section elaborates on features you will need to understand to execute best practices and understand other people's code.
 
-Structures: Interpretations of Computer Programs
+5.1. Structures: Interpretations of Computer Programs
 
-Standard Libraries
+5.2. Standard Libraries
 
 File IO
 
