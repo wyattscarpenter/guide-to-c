@@ -385,7 +385,7 @@ Here are some other preprocessor directives.
 
 #error allows you to trigger custom compiler errors in case your code detects something is wrong while in the preprocessing stage.
 
-#pragma: from the greek πρᾶγμᾰ (meaning "a thing done" or "a fact") #pragma allows you to specify various additional commands to the compiler that the creators of C didn't think of in time to make them real preprocessor commands. I have never used a single one of these in my code, but I have SEEN them used sometimes.
+#pragma: from the greek πρᾶγμᾰ (meaning "a thing done" or "a fact") #pragma allows you to specify various additional commands to the compiler that the creators of C didn't think of in time to make them real preprocessor commands. I have never used a single one of these in my code, but I have SEEN them used sometimes. For instance, #pragma once in a header file is like wrapping your header in the ifndef guard discussed earlier to include it only once.
 
 4.8. Input-Output (Standard IO)
 
