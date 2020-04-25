@@ -258,19 +258,31 @@ int main(int argc, char **argv){}
 
 The count is traditionally named "argc" for "argument count", and the address of address is traditionally named "argv" for "argument vector", from the mathematical concept of a vector (ie, a list).
 
-You might be a little confused at the concept of an address of a list of addresses of strings, but consider: each command line argument (like "-l") is a string. In C, a string is the address of the first char. The operating system will break apart the command (like "ls -l") for you, and give you a list of strings. This list also has to be variable length, so its length is indicated by argc. argv[0] contains the name of your program (like "ls" in the "ls -l" example above). Here is a simple program that iterates over each character of each argument:
+You might be a little confused at the concept of an address of a list of addresses of strings, but consider: each command line argument (like "-l") is a string. In C, a string is the address of the first char. The operating system will break apart the command (like "ls -l") for you, and give you a list of strings. This list also has to be variable length, so its length is indicated by argc. argv[0] contains the name of your program (like "ls" in the "ls -l" example above). argv[arc], the element of argv after the last argument, is always a null pointer. Here is a simple program that iterates over each character of each argument:
 
 int main(int argc, char **argv){
   int i = 0;
   while(i < argc){
-    int j = 0;
     char c = argv[i][0];
     while(c){
       c = argv[i][j];
-      j = j + 1;
     }
     i = i + 1;
 }
+
+Here is a second variant that uses the null pointer instead of argc to determine the end of argv. Recall that a null pointer will evaluate as 0 in a while condition:
+
+int main(int argc, char **argv){
+  int i = 0;
+  while(argv[i]){
+    char c = argv[i][0];
+    while(c){
+      c = argv[i][j];
+    }
+    i = i + 1;
+}
+
+Using a null pointer to signal the end of lists of lists is a common pattern and very useful. It's also unambiguous: a pointer to an empty list is different than a null pointer. If this is not immediately apparent, try to demonstrate it to yourself.
 
 4.6.1 Exercise 1.1: Celsius to Fahrenheit
 
