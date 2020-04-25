@@ -476,11 +476,7 @@ Now you should have enough knowledge to complete every exercise in the appendix!
 
 While the purpose of the previous section was to get you up to speed with a minimal set of features you need to write effective C programs, this section elaborates on features you will need to understand to execute best practices and understand other people's code.
 
-Pernicious Prepositions Part 2: Pertinent Prepositions
-
-Pernicious Prepositions Part 3: Perfidious Prepositions
-
-Every other feature in C
+Structures: Interpretations of Computer Programs
 
 Standard Libraries
 
@@ -488,7 +484,21 @@ File IO
 
 I consider it bad style to manipulate a file directly if instead you could process streams passed to your program into streams going out. This is because the streams method has no "side effects", that is, all the data is intentionally specified by the user, with no risk of modifying a file they didn't intend.
 
-X. TUIs, GUIs, Games
+However, this only works for a simple class of programs, and sometimes you have to explicitly manipulate a file.
+
+Pernicious Prepositions Part 2: Pertinent Prepositions
+
+Pernicious Prepositions Part 3: Perfidious Prepositions
+
+Every other feature in C
+
+It's occured to me that in order to write a more comprehensive guide I would have to spend a lot more time at this than I really care to. Having given you a solid basis for understanding what programs are, I now direct you to other guides to C, such as K&R's The C Programming Language or whatever books happen to be on hand. The rest of this guide will deal with a smattering of advanced topics.
+
+6. Advanced Topics
+
+6.1. Style
+
+6.2. TUIs, GUIs, Games
 
 So far I have taught you how to make classic C programs that are invoked from the command line to process streams of data and manipulate files. But there are other modalities of interface. I don't have the time or expertise to explain them here, but I will give you some advice at where to look if you want to make a program with one.
 
@@ -500,7 +510,7 @@ If you've played a video game, you may have noticed that they look nothing like 
 
 All of these are more trouble than they are worth, in my opinion.
 
-X. Version Control
+6.3. Version Control
 
 You may have noticed that sometimes you edit a program, then you return another day and edit it again, then you return a third day and decide that your second edit was erroneous and want to undo it but whoops! your editor's undo history is gone, and you have no choice but to rewrite the program using your hazy memory as a guide. Many such cases.
 
@@ -521,10 +531,10 @@ git push #push changes to a remote repository, if you have one
 
 #there are commands to set the code to a certain state in history, but these are finnicky enough that I always look them up to make sure I'm doing the right thing
 
-X. And Beyond!
+6.4. And Beyond!
 
 Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc.
 
 Appendix A: Exercises
 
-These exercises are well documented elsewhere, so I will merely mention them, in approximate order of difficulty, and leave it up to you to look them up, specify them precisely, and attempt them: Hello World, repeat the user's name back to them, BMI calculator, FizzBuzz, 
+These exercises are well documented elsewhere, so I will merely mention them, in approximate order of difficulty, and leave it up to you to look them up, specify them precisely, and attempt them: Hello World, repeat the user's name back to them, BMI calculator, FizzBuzz, nim, 
