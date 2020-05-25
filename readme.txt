@@ -542,7 +542,7 @@ If you're foolhardy, like me, you can define your own foreach macro like so:
 
 #define foreach(var, array) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + sizeof(array)/sizeof(array[0]); var = *++var##_p)
 
-Note that in this macro var is the data and var_p is a pointer to that record (we use the c pre-processor "glue" operator ## to make var_i):
+Note that in this macro var is the data and var_p is a pointer to that record (we use the c pre-processor "glue" operator ## to make var_p). A more ideal implemention might provide us with var and var_i (the offset, ie the index) instead, but C makes that impossible to do cleanly. Anyhow, some examples of this code in action:
 
 int a[] = {69, 57, 21};
 foreach(i,a){ //standard for loop
@@ -561,11 +561,19 @@ foreach(i,a){ //nested for works properly and you can use outer vars in inner lo
   }
 }
 
+A more natural example might be something like:
+
+foreach(user, users){
+  puts(user.name);
+}
+
+This simple example immediately calls to our attention the fact that we are doing a bunch of assigning/accessing behind the scenes that the compiler may or may not optimize out... ah, no matter.
+
 Obviously, our foreach here is only usable for simple arrays. We could also define
 
 #define foreachs(var, string) for(typeof(string[0]) *var##_p = string, var = *var##_p; var!=0; var = *++var##_p)
 
-which will work for any zero-terminated string, such as a null-terminated character array or a null-terminated pointer array
+which will work for any zero-terminated string, such as a null-terminated character array or a null-terminated pointer array.
 
 You could also define
 
