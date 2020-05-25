@@ -561,6 +561,21 @@ foreach(i,a){ //nested for works properly and you can use outer vars in inner lo
   }
 }
 
+Obviously, our foreach here is only usable for simple arrays. We could also define
+
+#define foreachs(var, string) for(typeof(string[0]) *var##_p = string, var = *var##_p; var!=0; var = *++var##_p)
+
+which will work for any zero-terminated string, such as a null-terminated character array or a null-terminated pointer array
+
+You could also define
+
+#define foreachl(var, array, length) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + length; var = *++var##_p)
+
+for when the length is known but not available to the compiler at compile time.
+
+
+You could also define one of these for a linked list, but who uses a linked list?
+
 
 
 Every other feature in C
