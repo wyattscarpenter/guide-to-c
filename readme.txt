@@ -488,7 +488,86 @@ However, this only works for a simple class of programs, and sometimes you have 
 
 Pernicious Prepositions Part 2: Pertinent Prepositions
 
+There are many cases where you'd like to always run a while loop once, and then check at the end of the loop for the while condition. You can to that with a do-while loop, like so:
+
+do {
+  statements = 1;
+  likethis();
+  etc();
+} while(something);
+
 Pernicious Prepositions Part 3: Perfidious Prepositions
+
+You might have noticed that every time I write a while loop in these examples I tend to write something like
+int i = 0;
+while(i<max) {
+  //do something
+  i++;
+}
+However, it's pretty easy to forget the int i = 0; and the i++; in here, and ideally i would be scoped to the inside of the loop rather than the outside. C has a convenience just for this:
+for(int i = 0; i < max; i++){
+  //do something
+}
+This is equivalent to the while loop above, it's just a rearrangement and rescoping as I described. You can work out for yourself how a for loop could be transformed into a while loop, I'm sure.
+
+Cute fact 1:
+All parts of the for loop are optional-- or, I should say, several parts are allowed to be the null statement ";", which does nothing-- so you can do cute things like write
+for(;;){
+  //whatever
+}
+to write infinite loops, much like while(1). I've always found while(1) more intuitive, though, especially if I here pronounce 1 as "true".
+
+You can even do dumb stuff like write for(;;); to make an infinite loop that does nothing.
+
+Cute fact 2:
+We usually uses for loops straight-forwardly, but you can get pretty tricky with them, especially if you remember how to initialize multiple variables per declaration and/or if you remember how to use the comma operator. For example,
+
+for(int i = 0, j = 10; i<max && j>max; i++,j++){
+  //something hard to understand
+}
+
+I cannot usually recommend doing this, since it's usually confusing, but sometimes it's the best way to do something.
+
+Cute fact 3:
+
+Actually, the thing we most usually want to do with a for loop in C is iterate over an array. You will write a LOT of code like
+
+for(int i = 0; i < length; i++){
+  //blah blah blah
+}
+
+To the extent that you will begin cursing C for not having a foreach loop for some sort.
+
+If you're foolhardy, like me, you can define your own foreach macro like so:
+
+#define foreach(var, array) for(unsigned int var = 0; var < sizeof(array)/sizeof(array[0]); var++)
+
+Note that in this macro var is the index, like int i in the example above, so a program like this works perfectly well:
+
+int a[] = {69, 57, 21};
+foreach(i,a){ //standard for loop
+  printf("%d %d\n", i, a[i]);
+}
+foreach(i,a){ //nested for works properly without the i values colliding (variable shadowing)
+  printf("%d %d\n", i, a[i]);
+  foreach(i,a){
+    printf("%d %d\n", i, a[i]);
+  }
+}
+foreach(i,a){ //nested for works properly and you can use outer vars in inner loops
+  printf("%d %d\n", i, a[i]);
+  foreach(j,a){
+    printf("%d %d\n", i, a[j]);
+  }
+}
+
+
+Now, since we usually want to access a[i] instead of i, it would be better if var referred to the thing itself and var_index referred to the index of it. However, it's hard to make a macro like that hygenically (not leaking variable definitions outside its scope), since we can only initialize one type of variable in the first section of the for loop.
+
+Our foreach here is also a little iffy because we're accessing array[0] and the array might be empty. This is "undefined behavior" but such a common practice that I assume no C implementation would fail it, but if need be I suppose we could write
+
+#define foreach(var, array) if(sizeof(array)>0) for(unsigned int var = 0; var < sizeof(array)/sizeof(array[0]); var++)
+
 
 Every other feature in C
 
