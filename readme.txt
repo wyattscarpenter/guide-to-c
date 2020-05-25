@@ -540,33 +540,27 @@ To the extent that you will begin cursing C for not having a foreach loop for so
 
 If you're foolhardy, like me, you can define your own foreach macro like so:
 
-#define foreach(var, array) for(unsigned int var = 0; var < sizeof(array)/sizeof(array[0]); var++)
+#define foreach(var, array) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + sizeof(array)/sizeof(array[0]); var = *++var##_p)
 
-Note that in this macro var is the index, like int i in the example above, so a program like this works perfectly well:
+Note that in this macro var is the data and var_p is a pointer to that record (we use the c pre-processor "glue" operator ## to make var_i):
 
 int a[] = {69, 57, 21};
 foreach(i,a){ //standard for loop
-  printf("%d %d\n", i, a[i]);
+  printf("%p %d\n", i_p, i);
 }
 foreach(i,a){ //nested for works properly without the i values colliding (variable shadowing)
-  printf("%d %d\n", i, a[i]);
+  printf("%p %d\n", i_p, i);
   foreach(i,a){
-    printf("%d %d\n", i, a[i]);
+    printf("%p %d\n", i_p, i);
   }
 }
 foreach(i,a){ //nested for works properly and you can use outer vars in inner loops
-  printf("%d %d\n", i, a[i]);
+  printf("%p %d\n", i_p, i);
   foreach(j,a){
     printf("%d %d\n", i, a[j]);
   }
 }
 
-
-Now, since we usually want to access a[i] instead of i, it would be better if var referred to the thing itself and var_index referred to the index of it. However, it's hard to make a macro like that hygenically (not leaking variable definitions outside its scope), since we can only initialize one type of variable in the first section of the for loop.
-
-Our foreach here is also a little iffy because we're accessing array[0] and the array might be empty. This is "undefined behavior" but such a common practice that I assume no C implementation would fail it, but if need be I suppose we could write
-
-#define foreach(var, array) if(sizeof(array)>0) for(unsigned int var = 0; var < sizeof(array)/sizeof(array[0]); var++)
 
 
 Every other feature in C
