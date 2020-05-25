@@ -569,12 +569,11 @@ which will work for any zero-terminated string, such as a null-terminated charac
 
 You could also define
 
-#define foreachl(var, array, length) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + length; var = *++var##_p)
+#define foreachn(var, array, n) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + n; var = *++var##_p)
 
 for when the length is known but not available to the compiler at compile time.
 
-
-You could also define one of these for a linked list, but who uses a linked list?
+You could also define one of these for a linked list, but who uses linked lists?
 
 
 
