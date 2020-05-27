@@ -7,6 +7,8 @@ Besides fill memory?" --Jonathan Blow
 
 Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover the feature set of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features.
 
+This is not a complete overview of the C language. In fact, near the end of the guide I will advise you to read an entirely different, much more comprehensive & canonical, but much less beginner-friendly book about C. This guide is meant to teach you a usuable subset of C and a useful, and in some ways extremely straightforward, understanding of what it is you are doing when you program.
+
 1.2. Disclaimer
 
 I release this work into the public domain under CC0. If you use it or find it useful in some way, I would appreciate credit and notice, but that request is not legally binding because, as I just said, I release this work into the public domain under CC0.
