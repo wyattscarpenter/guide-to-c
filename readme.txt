@@ -595,6 +595,55 @@ It's occured to me that in order to write a more comprehensive guide I would hav
 
 6.1. Style
 
+I will address both typographical style-- how the code is formatted-- and semantic style-- how the code is formulated, in this section.
+
+6.1.1. Typographical Style
+
+In this guide, I have tried to subtly indoctrinate you into my typographical style of writing code simply by writing all of my sample code in my style. Unlike most reasoned thinkers, I think style is important and there is one objectly correct style (though naturally I admit it is possible that my is not the objectively correct one). Style can make your code easier or hard to understand. For instance, it is a point of contention whether the braces in a function should be written
+
+void foo(void) {
+  //note the same line
+}
+
+or
+
+void foo(void)
+{
+  //note the next line
+}
+
+In my youth, I favored the second version because I liked the symmetry of the {} pair. However, as a more experienced programmer I have realized: 1) the top line and bottom line of the function are still symmetrically indented in the first version 2) the second version wastes an entire line for a single, uninteresting character. This may not seem like a lot, but a significant portion of programming is getting all your code on a single screen and staring at it until you understand why it's broken. So it's very helpful to have compact code, and this is an easy tradeoff to make.
+
+Other typographic style points make your code read more or less like it actually works. For instance, even though many people like to write int* c;, on the hunch that they are declaring an int pointer, not a "thing-that-dereferences-to-int", int* c, d; declares an int pointer c and an int d. To avoid confusion you must write int *c. This also makes some sense because there's no way to declare an int[] a (that's just a parse error) you have to declare an int a[], so you might as well get used to the way these derived types are declared.
+
+6.1.2. Semantic Style
+
+Some semantic styles are strictly better than others, and this is refered to as writing better code. You can can usually measure this in outcomes like speed, size, etc of the resulting executable. See also my best-selling programming self-help book "Just Write Better Code LOL".
+
+Some styles do not lead to a better execution of your program but do made your program easier to read. For instance, one good rule is: do not do more than three things in a single line of code.
+
+For instance, for some reason a common implemention of strcpy is
+
+char *strcpy(char *dest, const char *src){
+  char *start = dest;
+  while(*dest++ = *src++);
+  return start;
+}
+
+The while loop with an empty body here does-- well, it's arguable, but I'd say it's more than 3 things. I might replace it with
+
+while(*src){
+  *dest = *src;
+  dest++;
+  src++;
+}
+
+(well, actually, I'm a fun guy who thinks *x++ is pretty slick so I might replace it with while(*src){*dest++ = *src++;})
+
+These arrangements are going to produce equivalent code on all but the dumbest compilers, so you might as well pick the one that makes the most sense to read. You will have to read code often.
+
+Occasionally, you will have to choose between more understandable code and faster-executing code. This is a tradeoff, and there are many schools of thought here, but I find the best thing to do is usually to do it the faster way and then leave a comment explaining what you did.
+
 6.2. TUIs, GUIs, Games
 
 So far I have taught you how to make classic C programs that are invoked from the command line to process streams of data and manipulate files. But there are other modalities of interface. I don't have the time or expertise to explain them here, but I will give you some advice at where to look if you want to make a program with one.
