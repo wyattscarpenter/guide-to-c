@@ -5,7 +5,7 @@ Besides fill memory?" --Jonathan Blow
 
 1.1. Preamble
 
-Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover the feature set of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features.
+Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover C as of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features. Nor will I explain any. Come to think of it, I've only once used a C feature that was introduced this millennium.
 
 This is not a complete overview of the C language. In fact, near the end of the guide I will advise you to read an entirely different, much more comprehensive & canonical, but much less beginner-friendly book about C. This guide is meant to teach you a usuable subset of C and a useful, and in some ways extremely straightforward, understanding of what it is you are doing when you program.
 
@@ -418,7 +418,7 @@ If, god forbid, the output stream should run out of space, puts will return the 
 If, as is inevitable, the input stream should run out of data, getchar will return the non-zero constant EOF. People almost always check this, and write neat loops like
 
 int c;
-while(c = getchar()){
+while(c = getchar() != EOF){
   //do some stuff with c
 }
 
@@ -431,6 +431,8 @@ printf("Here is your number: %d\n", 10); //prints "Here is your number: 10", the
 Printf does all its formatting at runtime, and covers a lot of cases, so it is a fairly hefty function and occasionally you will put the wrong specifiers in and become confused and/or crash your program and/or introduce serious security flaws. For these reasons, I caution against using a printf when a puts will do.
 
 Unlike puts, you will have to specify your own newlines using "\n".
+
+(I recenly wrote a generic compile-time print function. I'm very proud of it, but it's exceptionally arcane so unlike foreach (below) I won't go into details. I will link it here, though https://github.com/wyattscarpenter/print.h)
 
 Even though it's not part of C, I should mention that on the bash command line, you can specify files to go into input or output like so:
 
@@ -686,3 +688,7 @@ Consult the internet or appropriate documentation to learn about other libraries
 Appendix A: Exercises
 
 These exercises are well documented elsewhere, so I will merely mention them, in approximate order of difficulty, and leave it up to you to look them up, specify them precisely, and attempt them: Hello World, repeat the user's name back to them, BMI calculator, FizzBuzz, nim, 
+
+TODO:
+sizeof, typeof, offsetof
+else
