@@ -57,7 +57,7 @@ At this point you should have a good handle on multiple ways to represent the bi
 
 2.2. Numbers
 
-At this point, with a bit of reflection, it should become apparent to you that we can add bytes. As simply as we might 72 and 101, we could add the bytes hold those values and receive the value 173. You can do all sorts of arithmetic operations like this. If you want to deal with numbers larger than 255, you can treat several consecutive bytes as representing parts of the same number. For instance, two bytes containing 0x48 and 0x65 might be treated as two parts of one number containing 0x4865.
+At this point, with a bit of reflection, it should become apparent to you that we can add bytes. As simply as we might 72 and 101, we could add the bytes holding those values and receive the value 173. You can do all sorts of arithmetic operations like this. If you want to deal with numbers larger than 255, you can treat several consecutive bytes as representing parts of the same number. For instance, two bytes containing 0x48 and 0x65 might be treated as two parts of one number containing 0x4865.
 
 Naturally, the question arises: if I have two bytes that represent the value 0x4865 by being 0x48 and 0x65, should the 0x48 come before the 0x65 or after? The answer is obviously that 0x48 should come first and then 0x65, but computer scientists are bad so they usually make the 0x65 come first and then the 0x48. That is, on most modern machines the string of two bytes we might write out as 6548 represents the integer 0x4865. I find this personally disappointing, but it is ultimately an arbitrary decision of ordering. Machines on which the string of two bytes we might write out as 6548 represents the integer 0x6548 are known as "big-endian" because they start eating the big end of the integer first. Most modern machines are little-endian. Knowing about this is probably usless to you right now, but it will be useful to you later, probably once you've forgotten about it.
 
@@ -546,7 +546,7 @@ If you're foolhardy, like me, you can define your own foreach macro like so:
 
 #define foreach(var, array) for(typeof(array[0]) *var##_p = array, var = *var##_p; var##_p < array + sizeof(array)/sizeof(array[0]); var = *++var##_p)
 
-Note that in this macro var is the data and var_p is a pointer to that record (we use the c pre-processor "glue" operator ## to make var_p). A more ideal implemention might provide us with var and var_i (the offset, ie the index) instead, but C makes that impossible to do cleanly. Anyhow, some examples of this code in action:
+Note that in this macro var is the data and var_p is a pointer to that record (we use the c pre-processor "glue" operator ## to make var_p). A more ideal implementation might provide us with var and var_i (the offset, ie the index) instead, but C makes that impossible to do cleanly. Anyhow, some examples of this code in action:
 
 int a[] = {69, 57, 21};
 foreach(i,a){ //standard for loop
@@ -575,7 +575,7 @@ This simple example immediately calls to our attention the fact that we are doin
 
 Obviously, our foreach here is only usable for simple arrays. We could also define
 
-#define foreachs(var, string) for(typeof(string[0]) *var##_p = string, var = *var##_p; var!=0; var = *++var##_p)
+#define foreachz(var, string) for(typeof(string[0]) *var##_p = string, var = *var##_p; var!=0; var = *++var##_p)
 
 which will work for any zero-terminated string, such as a null-terminated character array or a null-terminated pointer array.
 
