@@ -5,7 +5,7 @@ Besides fill memory?" --Jonathan Blow
 
 1.1. Preamble
 
-Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover C as of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features. Nor will I explain any. Come to think of it, I've only once used a C feature that was introduced this millennium.
+Hello and welcome to the weird and wacky world of C programming. This is a guide to C programming for the complete beginner. Special attention has been made to cover C as of C18 (ISO/IEC 9899:2018), the most recent standard C at time of writing (AD 2020), without much attention paid to explaining the idiosyncracies of previous versions of C. This attention is despite my own personal unfamiliarity with more recent C features-- I will not explain any. Come to think of it, I've only once used a C feature that was introduced this millennium. But, point is, I'm not going to explain C features that are no longer used.
 
 This is not a complete overview of the C language. In fact, near the end of the guide I will advise you to read an entirely different, much more comprehensive & canonical, but much less beginner-friendly book about C. This guide is meant to teach you a usuable subset of C and a useful, and in some ways extremely straightforward, understanding of what it is you are doing when you program.
 
@@ -20,6 +20,53 @@ THE TEXT IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD
 The first step to learning C, if you haven't learned any low-level programming languages before, is to completely forget any knowledge you have about programming. Once you learn C, you will be able to relate it to other programming languages you might know in a productive way, but while you are learning C any similarities you notice will simply trip you up. Some would argue that you should also forget your preconceptions about the English language to productively learn C, but unfortunately I can't advise that as I need you to read the rest of this guide.
 
 1.4. Chekhov's Gun: Installing a C Compiler
+
+1.4.1 Basic Computer Literacy
+
+Unfortunately, you need a certain amount of computer savvy to even start writing a C program, so in this section I will give you a brief crash course. A computer is a machine that manipulates data. A computer can run routines to manipulate data known as programs. Modern computers, when on, are constantly running complicated programs called "operating systems" (OS) that manage the hardware of the computer and allow other programs to run. Data on computers are stored in persistent chunks known as "files", apparently by analogy to a filing cabinet. A file could store something like a picture, a text document, a collection of other information, or anything really. The operating system manages how files are stored on the hardware, providing an abstract interface so programs can "write to" files without having to worry about how they are stored. Files can have names, and are usually named something relevant, followed by . and then a "file extention", a sequence of letters specifying the type of data in the file. Files in modern operating systems can be arranged into groups called "folders" or "directories". These directories can also store directories as well. This means you can often store files in a nested structure of folders, of arbitrary depth. Folders have no file extension, because they are not files. To specify a particular file in this nested structure, one usually writes the names of the folders to get to the file, and then the file name, separated by slashes (eg, "this/is/a/path/myfile.txt")-- this is called a file path. The entire collection of files and directories on your computer, as well as the particular technology that organizes it for you in your OS, is called your file system.
+
+There are as yet two major modalities for interacting with computers. Graphical, in which the user is presented with pictures representing the organization of the data on the system, and textual, in which the user is presented with text representing the organization of the data on the system. Graphical is often easier to use for novice users, so it is present in all modern operating systems. However, it is often easier to get things done in a textual user interface, so textual is also present.
+
+The main way to interact with a computer textually is the command line; in this program, you type a line (or lines) of text representing a command to the computer, and then the computer executes your command and (if you are lucky) tells you the result. The command line on Microsoft Windows is cmd.exe (to run this hold down the key on your keyboard that looks like the windows logo and press r. This will bring up the Run program. Then type cmd and press enter. This will run the cmd program) the command line on GNU/Linux is GNU Bash (how to run this varies by version of GNU/Linux, but it generally involves opening a "terminal" or "terminal emulator" program). cmd is short for "command" and bash is short for "Bourne Again SHell" ("shell" is another name for a way to interact with a computer. don't worry about the other part of the name).
+
+On the command line, you will typically see a "command prompt" prompting you to type a command. This prompt usually consists of the directory you are in (the current working directory) and a character like $ or >. You can then type commands. The simplest form of command begins with the name of a command, and is followed by arguments/options/flags provided to the command. The conventions of command lines are complex enough to warrant their own guide, as they are really programming languages in their own right, but here are the three most important concepts:
+
+cd - "Change Directory" - Changes the directory you are in to the one specified, like so:
+
+/home/you/example$ cd ..
+/home/you/$ cd example
+/home/you/example$ cd .
+/home/you/example$ cd ~
+/home/you/$ cd /home/you/example
+/home/you/example$
+
+Note that . is short for the current directory, .. for the directory containing the current directory, ~ for your home directory, and that file paths to change to can be given in absolute form (starting at /, the "root directory") or in relative form (from the current directory). This example interaction is for GNU/Linux, but cd works similarly in cmd. The biggest difference is that ~ isn't a valid shortcut. Also, there is no real root directory; the thing most analogous to a "root directory" is the root directory of the C drive, "C:\". Also, all the slashes are backwards (you can still elect to use forward slashes, though).
+
+ls (or in cmd, "dir") - List Directory - Lists the contents of the current or specified directory, like so:
+
+/home/you/$ ls
+example
+/home/you/$ ls example
+yet-more-example
+
+mkdir - creates a directory with the specified name
+
+cp (or "copy" in cmd) - copies the first location specified to the second location specified, eg cp from.txt to.txt
+
+mv (or "move" in cmd) - copies and then deleted the old file, thus "moving" it from one place to another
+
+There are many more commands. Commands can be built in to the command line program, or they can be specified by files on the computer that represent programs for the command line to invoke. When the name of a command is given to the command line to invoke, it first searches its builtins, then its path. The path is a list of folders it looks for commands in, in order. You may have to look up how to edit the path later, if you want to add a compiler to your path. In cmd, the current directory is searched before the path (which creates several hilarious security problems), so you can invoke a program in the current directory by typing, say,
+
+foo
+
+whereas in Bash you have to type
+
+./foo
+
+The best way to find more information about operating systems, programs, and computers is to use the internet, a network of computers interchanging data over a series of tubes. You can use a web browser program to access a search engine such as google to search over internet webpages (which are really just complicated text documents other computers are offering you on the internet) to find the information you need. The information you find that way is likely more up-to-date and accurate than I could make this guide. It's rather roundabout that you need to use a complicated program on your computer to ask another computer to ask other computers for information about your own computer, but since you probably got this guide over the internet it shouldn't present too much of a difficulty.
+
+
+1.4.2 What is a compiler?
 
 A C program is a text document on your computer. You will need to install a program on your computer to transform C programs into files that the computer can execute ("executables"). The most popular such program is GCC, which is also Free, so I suggest you use it. Google how to install gcc on your operating system and do that. This may take you some time to figure out; I suggest you treat this as a task of comparable difficulty to writing a complete program. On Ubuntu this may be as simple as running `sudo apt install gcc` on the command line, and on Windows this may be as "simple" as installing Bash for Windows and running `sudo apt install gcc` on the Bash command line. It doesn't really matter what compiler you install or how you install it, so long as it works. You are free to make substitutions so long as you can get something working.
 
