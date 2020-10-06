@@ -21,7 +21,7 @@ THE TEXT IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD
 
 The first step to learning C, if you haven't learned any low-level programming languages before, is to completely forget any knowledge you have about programming. Once you learn C, you will be able to relate it to other programming languages you might know in a productive way, but while you are learning C any similarities you notice will simply trip you up. Some would argue that you should also forget your preconceptions about the English language to productively learn C, but unfortunately I can't advise that as I need you to read the rest of this guide.
 
-1.4. Chekhov's Gun: Installing a C Compiler
+1.4. Chekhov's Gnu: Installing a C Compiler
 
 1.4.1 Basic Computer Literacy
 
