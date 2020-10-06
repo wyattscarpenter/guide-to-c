@@ -1,3 +1,5 @@
+"most experts' idea of a beginner resource is a monograph" --sol @fire__exit, https://twitter.com/fire__exit/status/1305031444377612289
+
 "What does my program do
 Besides fill memory?" --Jonathan Blow
 
