@@ -690,7 +690,19 @@ git push #push changes to a remote repository, if you have one
 
 #there are commands to set the code to a certain state in history, but these are finnicky enough that I always look them up to make sure I'm doing the right thing
 
-6.4. And Beyond!
+6.4. Dynamic Array, Hash Map, and STB
+
+One thing you that will occur to you, as you start to write real programs, is how often you want a dynamic array (an array (eg int[] = {1,2,3,4}) that can grow and shrink as you put more objects into it, for an unknown number of objects) or a hashmap (essentially, an array, possible dynamic, that is indexed by some function on data that is not just an integer offset, the point being to create a system of key-value pairs; an example use case is counting the frequency of words in a file: it is quite useful to have a structure that maps strings to ints (the ints being the fequencies) and a flat array with searching doesn't always cut it for large amounts of data). It will be instructive for you to write these for yourself a couple times, and trying to avoid having to write these things will make you a better programmer. Also, you will become more proficient in hunting down memory leaks & other errors. However, eventually you may wish to use a library for this, and other things, and stb.h is a pretty good one. https://github.com/nothings/stb/blob/master/stb.h
+
+6.5. Licensing
+
+Unfortunately, computer programs are copyrightable, which means that your computer programs, and the computer programs of others, are ensnared in fiddly webs of legal restrictions that you need to take a community college course to really understand. (Many software developers don't understand it, but think they do, leading to an amusing variety of folk copyright rituals!) Basically, no one can legally use, reuse, or copy anyone else's program without permission.
+
+There are a variety of software licenses one can apply to one's code. Free ("open source", "libre") software licenses make the code free as in freedom, giving others rights to use them automatically, under some stipulations. Unfortunately, there are so many of these licenses that many projects are ensnared in fiddly webs of legal restrictions that you need to take a community college course to really understand.
+
+Personally, I just put all my code into the public domain using the CC0 license, as this allows maximal freedom for others. I recommend you do this also, but be aware that as you do this you are giving a gift to the world, and can't get mad if they rip off your code, sell it without telling you, or even make a modification and copyright their changed version.
+
+6.6. And Beyond!
 
 Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc.
 
