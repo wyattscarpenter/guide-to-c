@@ -746,7 +746,7 @@ Eventually, you'll want to write a program with multiple files. This will necess
 
 5.9. Every Other Feature in C
 
-It's occurred to me that in order to write a more comprehensive guide I would have to spend a lot more time at this than I really care to. Having given you a solid basis for understanding what programs are, I now direct you to other guides to C, such as K&R's The C Programming Language or whatever books happen to be on hand. The rest of this guide will deal with a smattering of advanced topics.
+It's occurred to me that in order to write a more comprehensive guide I would have to spend a lot more time at this than I really care to. Having given you a solid basis for understanding what programs are, I now direct you to other guides to C, such as K&R's The C Programming Language or whatever books happen to be on hand, if you'd like to learn more obscure C features. The rest of this guide will deal with a smattering of advanced topics.
 
 6. Advanced Topics
 
@@ -853,6 +853,8 @@ Personally, I just put all my code into the public domain using the CC0 license,
 6.6. And Beyond!
 
 Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc.
+
+However, note also that given your current knowledge, the best way to learn more is to start making programs!
 
 Appendix A: Exercises
 
