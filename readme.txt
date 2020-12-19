@@ -748,6 +748,8 @@ int main() {
   printf("%d",f(g)); //prints 30
 }
 
+A tool of some usefulness to deal with complex C types is cdecl, which can be found on the command line where installed, or on the internet at https://cdecl.org/
+
 5.7. Some More Important Keywords
 
 When you get curious, you can look up the following c keywords to learn some more useful features: sizeof, typeof, offsetof, static, union.
