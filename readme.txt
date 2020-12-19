@@ -202,6 +202,18 @@ Similar to how we don't want to spend time clearing the frame we're done with, w
 
 This concept of a "call stack" is kind of an abstract, informal one, and various machines implement it various ways. In fact, the C standard makes no mention of a stack, and only specifies the lifetime of pieces of data.
 
+Illustration of the concept of a call stack:
+
+        0x23948577 <- local int i, filled with whatever garbage was already there
+        0x00000002 <- value of argument passed to doublei, the integer 2, copied to the stack
+frame2: 0x12345678 <- return address for doublei to return to
+        0x00000002 <- value of argument, the integer 2, copied to the stack
+frame1: 0x12345678 <- return address for quadruplei to return to
+
+We see here the call stack as the function quadruplei has just called the function double i, but before doublei has assigned anything to i.
+
+Note that the call stack does NOT contain the instructions that are to be performed on the these pieces of data. It is merely a data structure the actual program uses for bookkeeping.
+
 3.4. Statements
 
 There is another type of instruction in C besides declarations. They are "statements", and they do things. For instance, "2+2;" would instruct the machine to compute the result of adding 2 to 2, "doublei(someint);" would compute the result of doubling someint, etc. Now, you might notice that it's not very useful to compute 2+2 in a vacuum. The program will compute a value of 4 and immediately move on, unless the value is stored somewhere. This leads us to contemplation of "assignment", setting a declared variable equal to a value. Assignment in a statement is written like assignment in a declaration, but without the type specifier. For example, once we have a declared variable i somewhere, we can write "i = doublei(someint);" to set the value of the memory referred to by i to whatever result we get out of that invocation of doublei. Fun fact: assignment returns the value assigned, so "x = 2" both sets x to 2 and returns 2. This can be very useful in loops, which we will get to later.
