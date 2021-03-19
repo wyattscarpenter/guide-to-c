@@ -599,7 +599,7 @@ Even though it's not part of C, I should mention that on the bash command line, 
 
 programyourerunning <inputfile.txt >outputfile.txt
 
-Note that the angle bracket bits are not arguments to your program. You will not see them in argv! They are processed by bash and never seen by your program.
+Note that the angle brackets (and the name after each bracket) are not arguments to your program. You will not see them in argv! They are processed by bash and never seen by your program.
 
 You can append to a file instead of overwrite it with >>
 
@@ -607,7 +607,7 @@ programyourerunning <inputfile.txt >>outputfile.txt
 
 You can remember this because if you use ">>", the file will contain two outputs (">"), the previous and the present.
 
-You can also "pipe" the output of one program into another, which fittingly uses the pipe character as punctuation:
+You can also "pipe" the output of one program into another as input, which fittingly uses the pipe character as punctuation:
 
 programyourerunning | anotherprogram
 
