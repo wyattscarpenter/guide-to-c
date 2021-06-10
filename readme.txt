@@ -866,9 +866,9 @@ Personally, I just put all my code into the public domain using the CC0 license,
 
 6.6. And Beyond!
 
-Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc.
+Consult the internet or appropriate documentation to learn about other libraries, features of C I may not have mentioned, etc. Personally I find the comp.lang.c Frequently Asked Questions to be quite helpful http://www.c-faq.com, and you may wish to acquire and reference a copy of the most recent C standard at some point.
 
-However, note also that given your current knowledge, the best way to learn more is to start making programs!
+However, given your current knowledge, the best way to learn more is to start making programs!
 
 Appendix A: Exercises
 
