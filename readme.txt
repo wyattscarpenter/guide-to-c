@@ -523,6 +523,8 @@ It's rather hard to come up with simple motivating examples for using the C prep
 
 In real life, the main purpose for #define is to define platform-specific constants that have to be known at compile time. For instance, suppose that on Windows you need to specify a variable to have the value 1 and for linux the value 2. You don't want to do a lot of mucking around and guessing at run time, so it's much simpler to define a macro. But the macro must be defined a different way for each operating system. How might we go about this?
 
+(In case you were wondering, the other good uses for macros I've found are (1) scopey stuff like the size of an array or swapping variables where it's impossible to write a function that does the same thing (you'll know these when you run into them eventually) and (2) function-like convenience macros where foo(x) actually calls very_complex_foon_specialized(x,y,z,q,r,s)-- but even these are kind of a suspect use case, as you can just write foo as a regular function that will usually be optimized out.)
+
 Well, when compiling for Windows, compilers will typically #define _WIN32 as 1 when compiling for windows, and __linux__ as 1 when compiling for linux. Therefore, we can write the code
 
 #if _WIN32
