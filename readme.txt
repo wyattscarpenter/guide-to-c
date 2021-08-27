@@ -11,6 +11,8 @@ Hello and welcome to the weird and wacky world of C programming. This is a guide
 
 This is not a complete overview of the C language. In fact, near the end of the guide I will advise you to read an entirely different, much more comprehensive & canonical, but much less beginner-friendly book about C. This guide is meant to teach you a usable subset of C and a useful, and in some ways extremely straightforward, understanding of what it is you are doing when you program.
 
+The motivation for this guide is mostly to impress upon you what I consider to be the correct view of programming: it's all about manipulating bits as best you can. Hopefully, learning to program this way will make a lot of things make a lot more sense than they do in alternative explanations of programming! Unfortunately, C is also a weird programming language with a bunch of fiddly syntax and weird decisions. However, it's probably simpler and more low-level than most other programming languages in current use, so it seems a fine place to start.
+
 1.2. Disclaimer
 
 I release this work into the public domain under CC0. If you use it or find it useful in some way, I would appreciate credit and notice, but that request is not legally binding because, as I just said, I release this work into the public domain under CC0.
