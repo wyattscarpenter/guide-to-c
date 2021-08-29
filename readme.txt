@@ -13,6 +13,8 @@ This is not a complete overview of the C language. In fact, near the end of the 
 
 The motivation for this guide is mostly to impress upon you what I consider to be the correct view of programming: it's all about manipulating bits as best you can. Hopefully, learning to program this way will make a lot of things make a lot more sense than they do in alternative explanations of programming! Unfortunately, C is also a weird programming language with a bunch of fiddly syntax and weird decisions. However, it's probably simpler and more low-level than most other programming languages in current use, so it seems a fine place to start.
 
+Additionally, most programming languages in use these days are based on C, so learning C should give you a good foundation to learn all modern programming languages. Modern languages can usually be imagined as C but with garbage collection and string operations and convenience functions. In fact, many current programming languages make design decisions that don't really make any sense unless you already understand C, its conventions, and its constaints.
+
 1.2. Disclaimer
 
 I release this work into the public domain under CC0. If you use it or find it useful in some way, I would appreciate credit and notice, but that request is not legally binding because, as I just said, I release this work into the public domain under CC0.
