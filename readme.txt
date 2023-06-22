@@ -190,7 +190,7 @@ It is important to note that at the "top level" of nesting in a C file (outside 
 
 int doublei(int integertodouble){
   int i;
-  i = integertodouble * 2
+  i = integertodouble * 2;
   return i;
 }
 
