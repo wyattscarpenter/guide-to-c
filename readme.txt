@@ -137,7 +137,7 @@ The most common type of integer in C programs is 4 bytes long, which is good eno
 
 2.3. Numbers 2: The Numbering
 
-The more mathematically inclined among you may have noticed that, technically, an integer can be negative. This is correct. Most integers stored on computers are "signed" meaning they can be either positive or negative (ie they may be thought of as having a + or - sign in front of them if they are negative) and are stored in something called "two's complement". The details of this are not important right now, as evidenced by the fact that I can't remember them off the top of my head, but suffice to say that some of the possible values of the integer are relegated to representing negative numbers instead.
+The more mathematically-inclined among you may have noticed that, technically, an integer can be negative. This is correct. Most integers stored on computers are "signed" meaning they can be either positive or negative (ie they may be thought of as having a + or - sign in front of them if they are negative) and are stored in something called "two's complement". The details of this are not important right now, as evidenced by the fact that I can't remember them off the top of my head, but suffice to say that some of the possible values of the integer are relegated to representing negative numbers instead.
 
 (I've just remembered that to negate a number in two's complement, you invert all the bits and then add one. The reason it's implemented this way, by the way, is so that the same addition circuit can be used for both signed and unsigned numbers.)
 
