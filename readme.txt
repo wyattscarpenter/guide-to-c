@@ -1,5 +1,7 @@
 "most experts' idea of a beginner resource is a monograph" --sol fire__exit
 
+"The best book on programming for the layman is ”Alice in Wonderland”; but that's because it's the best book on anything for the layman." --Alan J. Perils (https://dl.acm.org/doi/pdf/10.1145/947955.1083808)
+
 "What does my program do
 Besides fill memory?" --Jonathan Blow
 
